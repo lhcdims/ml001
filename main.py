@@ -36,22 +36,16 @@ for i in range(intN+1):
 
 intMaxTrainTimes = 100
 
-# intMinStepSize = 0.01
 
-
-# Iterate for each theta
-
-
-# Calculate Theta0
+# Init. Temp vars.
 intSum = 0
 intTemp = 0
 
 
+# Iterates for intMaxTrainTimes
 for t in range(intMaxTrainTimes):
-  # Calculate Theta 0
-
+  # Iterate for each feature
   for i in range(0, intN+1):
-
     # Init Summation
     intSum = 0
 
@@ -75,27 +69,6 @@ for t in range(intMaxTrainTimes):
 
 
 
-  # # Calculate Theta 1
-
-  # # Init Summation
-  # intSum = 0
-
-  # for j in range(intM):
-  #   intTemp = (aryTheta[0] + aryTheta[1] * aryT[j]['x'][0]) - aryT[j]['y']
-
-  #   intTemp = intTemp * aryT[j]['x'][0]
-
-  #   print('i: i | t: ' + str(t) + ' | j: ' + str(j) + ' | intTemp: ' + str(intTemp))
-  #   intSum += intTemp
-  # #End for
-
-  # print('intSum: ' + str(intSum))
-
-  # # Calculate New Theta(i)
-  # aryTheta[1] = aryTheta[1] - intAlpha * intSum
-
-  # print('i: 1 | aryTheta[1]: ' + str(aryTheta[1]))
-
-
+# Print all Theta(s)
 print('aryTheta[0]: ' + str(aryTheta[0]))
 print('aryTheta[1]: ' + str(aryTheta[1]))
