@@ -2,12 +2,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 
+# 输入结束
 bolInputEnd = False
+
+# 共有多少 点
 intNumPoints = 0
-intX = 0
-intY = 0
+
+# 输入的 x 和 y
 strX = ''
 strY = ''
+
+# 输入的 x 和 y 转换成数字
+intX = 0
+intY = 0
+
+# 储存所有输入
 aryInput = []
 
 while not bolInputEnd:
@@ -43,7 +52,8 @@ while not bolInputEnd:
             bolFound = False
             for i in range(len(aryInput)):
                 print(i)
-print('结束了')
+
+print('输入结束了')
 
 plt.plot([0,1],[0,1], 'blue')
 plt.plot([0,1],[0,0], 'blue')
