@@ -20,7 +20,7 @@ intY = 0
 aryInput = []
 
 while not bolInputEnd:
-    strInput = input('请输入第 ' + str(intNumPoints) + ' 个坐标，[x,y]，按 q 结束：')
+    strInput = input('请输入第 ' + str(intNumPoints+1) + ' 个坐标，[x,y]，按 q 结束：')
     intX = 0
     intY = 0
     strX = ''
@@ -51,11 +51,26 @@ while not bolInputEnd:
             # 查看数组内有没有重复
             bolFound = False
             for i in range(len(aryInput)):
-                print(i)
+                if (aryInput[i][0] == intX and aryInput[i][1] == intY):
+                    bolFound = True
+                    print('您已经输入过这个点了：' + strInput)
+            
+            if (not bolFound):
+                aryInput.append([intX, intY])
+                intNumPoints += 1
 
 print('输入结束了')
 
-plt.plot([0,1],[0,1], 'blue')
-plt.plot([0,1],[0,0], 'blue')
-plt.plot([1,1],[0,1], 'blue')
-plt.show()
+bolOK = False
+
+if intNumPoints < 3:
+    print('不能少于三个点，程序结束')
+else:
+    bolOK = True
+
+if bolOK:
+    # 画图 
+    plt.plot([0,1],[0,1], 'blue')
+    plt.plot([0,1],[0,0], 'blue')
+    plt.plot([1,1],[0,1], 'blue')
+    plt.show()
