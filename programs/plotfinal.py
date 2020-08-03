@@ -1,4 +1,3 @@
-# import numpy as np
 import matplotlib.pyplot as plt
 import math
 import itertools
@@ -20,7 +19,10 @@ intY = 0
 # 储存所有输入
 aryInput = []
 
+
 # 各功能定义
+
+# 本功能看看 3 点是不是在一条线上，如果是，不允许画图
 def judge_three_point_in_one_line(pos):
     if pos[0][0] - pos[1][0] == 0:
         intMAB = 'infinity'
@@ -36,33 +38,32 @@ def judge_three_point_in_one_line(pos):
     else:
         return False
 
+# 本功能判断有没有任何三个点在同一条线上
 def judge_points_in_one_line(pos):
-    
-    #首先判断 pos的个数是否大于三个，小于3个点情况返回False
+    # 首先判断 pos的个数是否大于三个，小于3个点情况返回False
     if len(pos) < 3:
         return False
-    
-    intLen = len(pos)
-
-    #使用三重循环的形式， 一个个遍历所有的点， 
-    #开始第一重遍历， 从第一个遍历到倒数第三个点
+    # 使用三重循环的形式， 一个个遍历所有的点， 
+    # 开始第一重遍历， 从第一个遍历到倒数第三个点
     for x in range(0, len(pos)-2):
-        #开始第二重遍历， 从第一重遍历的下一个点开始遍历 到 倒数第二个点
+        # 开始第二重遍历， 从第一重遍历的下一个点开始遍历 到 倒数第二个点
         for y in range(x+1, len(pos)-1):
-            #开始第三重遍历， 从第二重遍历的下一个点开始遍历 到 倒数第一个点
+            # 开始第三重遍历， 从第二重遍历的下一个点开始遍历 到 倒数第一个点
             for z in range(y+1, len(pos)):
-                #取出三重遍历的这三个点， 使用judge_three_point_in_one_line 判断是否共线， 共线的情况 print 共线的点数，并返回 True
+                # 取出三重遍历的这三个点， 使用judge_three_point_in_one_line 判断是否共线， 共线的情况 print 共线的点数，并返回 True
                 bolSameLine = judge_three_point_in_one_line([pos[x], pos[y], pos[z]])
                 if bolSameLine:
                     print(str(pos[x]) + ", " + str(pos[y]) + ", " + str(pos[z]))
                     return True
-
     return False
 
+# 本功能计算两点之间的距离
 def distance_between_two_point(pos1, pos2):
     #返回 sqrt((x1-x2)**2 + (y1-y2)**2)
     return math.sqrt((pos1[0] - pos2[0])**2 + (pos1[1] - pos2[1])**2)
 
+
+# 计算所有点的距离
 def distance_points(pos, order):
     
     distance = 0.0
@@ -78,6 +79,7 @@ def distance_points(pos, order):
     
     return distance
 
+# 这个没搞懂，用了别的方法
 # def get_pos_order(pos):
 #     pos_order = [0,1,2]
 #     #判断点的个数大于2个，即至少3个点
@@ -112,8 +114,8 @@ def distance_points(pos, order):
 #     return pos_order
 
 
-while bolInputEnd:
-#while not bolInputEnd:
+#while bolInputEnd:
+while not bolInputEnd:
     strInput = input('请输入第 ' + str(intNumPoints+1) + ' 个坐标，[x,y]，按 q 结束：')
     intX = 0
     intY = 0
@@ -135,12 +137,14 @@ while bolInputEnd:
         # 检查 ‘[’ 和 ‘,’ 中间，以及 ‘,’ 和 ‘]’ 中间，输入的是不是数字
         strX = strInput[strInput.find('[')+1:strInput.find(',')]
         strY = strInput[strInput.find(',')+1:strInput.find(']')]
-        intX = float(strX)
-        intY = float(strY)
-        if math.isnan(intX):
-            print('[ 和 , 中间应该是一个数字')
-        elif math.isnan(intY):
-            print(', 和 ] 中间应该是一个数字')
+        bolWithError = False
+        try:
+            intX = float(strX)
+            intY = float(strY)
+        except:
+            bolWithError = True
+        if bolWithError:
+            print('只能输入数字')
         else:
             # 查看数组内有没有重复
             bolFound = False
@@ -155,15 +159,15 @@ while bolInputEnd:
 
 print('输入结束了, 计算中，请稍后（计算时间可能长达数十秒）')
 
-# 假輸入
-aryInput.append([0,0])
-aryInput.append([1,0])
-aryInput.append([1,1])
-aryInput.append([0,1])
-aryInput.append([0.5,0.6])
-aryInput.append([0.1,0.3])
-aryInput.append([0.9,0.8])
-intNumPoints = len(aryInput)
+# 测试用輸入
+# aryInput.append([0,0])
+# aryInput.append([1,0])
+# aryInput.append([1,1])
+# aryInput.append([0,1])
+# aryInput.append([0.5,0.6])
+# aryInput.append([0.1,0.3])
+# aryInput.append([0.9,0.8])
+# intNumPoints = len(aryInput)
 
 bolOK = False
 
@@ -176,9 +180,9 @@ else:
         bolOK = True
 
 if bolOK:
-    # Create Array Order
+    # 创建数组列举所有可能性
     aryOrder = []
-    # Create Array Distance
+    # 创建数组记录每一种可能性的距离
     aryDis = []
     
     aryTemp = []
@@ -188,6 +192,7 @@ if bolOK:
     aryOrder = list(itertools.permutations(aryTemp))
 
     for i in range(0, len(aryOrder)):
+        # 计算每种可能性的长度
         aryDis.append(distance_points(aryInput, aryOrder[i]))
 
     zipped_lists = zip(aryDis, aryOrder)
@@ -196,6 +201,7 @@ if bolOK:
     temp_lists = zip(*sorted_pairs)
     aryDis, aryOrder = [ list(temp) for temp in  temp_lists]
 
+    # 长度排序后，最短路径在数组第一条
     aryActualOrder = aryOrder[0]
 
     # 画图 
@@ -203,8 +209,7 @@ if bolOK:
         intPt1 = aryActualOrder[i]
         intPt2 = aryActualOrder[i+1]
         plt.plot([aryInput[intPt1][0], aryInput[intPt2][0]], [aryInput[intPt1][1], aryInput[intPt2][1]], 'blue')
+        
+    # 画头尾相接最后一条线
     plt.plot([aryInput[aryActualOrder[0]][0], aryInput[aryActualOrder[intNumPoints-1]][0]], [aryInput[aryActualOrder[0]][1], aryInput[aryActualOrder[intNumPoints-1]][1]], 'blue')
-    #plt.plot([0,1],[0,1], 'blue')
-    #plt.plot([0,1],[0,0], 'blue')
-    #plt.plot([1,1],[0,1], 'blue')
     plt.show()
