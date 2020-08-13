@@ -24,7 +24,7 @@ aryT.append({'x': [180], 'y': 76})
 intM = len(aryT)
 
 # Learning Rate
-intAlpha = 0.0001
+intAlpha = 0.00001
 
 # Init Array Parameters
 aryTheta = []
@@ -40,7 +40,7 @@ for i in range(intN+1):
 # Hypothesis H, t stands for theta
 # H(t) = t0 x0 + t1 x1
 
-intMaxTrainTimes = 1000
+intMaxTrainTimes = 10000
 
 
 # Init. Temp vars.
@@ -51,8 +51,8 @@ intTemp = 0
 # Define bandwidth Tau
 intTau = 5
 
-# Define Target X
-intXTarget = 110
+# Set Target X
+intXTarget = 100
 
 # Calculate w(j) for each x(j)
 aryOmega = []
@@ -73,6 +73,7 @@ for t in range(intMaxTrainTimes):
       if i > 0:
         intTemp = intTemp * aryT[j]['x'][i-1]
 
+      # Apply weight
       intTemp = intTemp * aryOmega[j]
 
       intSum += intTemp
