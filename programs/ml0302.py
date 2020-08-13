@@ -24,7 +24,7 @@ aryT.append({'x': [180], 'y': 76})
 intM = len(aryT)
 
 # Learning Rate
-intAlpha = 0.00001
+intAlpha = 0.0001
 
 # Init Array Parameters
 aryTheta = []
@@ -40,7 +40,7 @@ for i in range(intN+1):
 # Hypothesis H, t stands for theta
 # H(t) = t0 x0 + t1 x1
 
-intMaxTrainTimes = 50000
+intMaxTrainTimes = 1000
 
 
 # Init. Temp vars.
@@ -49,7 +49,7 @@ intTemp = 0
 
 
 # Define bandwidth Tau
-intTau = 1
+intTau = 5
 
 # Define Target X
 intXTarget = 110
@@ -57,9 +57,9 @@ intXTarget = 110
 # Calculate w(j) for each x(j)
 aryOmega = []
 for j in range(intM):
-    aryOmega.append(
-        math.exp(0 - math.pow(aryT[j]['x'][0] - intXTarget, 2) / 2 / math.pow(intTau, 2))
-    )
+  intTemp = math.exp((-1 * math.pow(aryT[j]['x'][0] - intXTarget, 2)) / (2 * math.pow(intTau, 2)))
+  aryOmega.append(intTemp)
+  #print(intTemp)
 
 # Iterates for intMaxTrainTimes
 for t in range(intMaxTrainTimes):
@@ -70,8 +70,8 @@ for t in range(intMaxTrainTimes):
 
     for j in range(intM):
       intTemp = ((aryTheta[0] + aryTheta[1] * aryT[j]['x'][0]) - aryT[j]['y'])
-      if i == 1:
-        intTemp = intTemp * aryT[j]['x'][0]
+      if i > 0:
+        intTemp = intTemp * aryT[j]['x'][i-1]
 
       intTemp = intTemp * aryOmega[j]
 
