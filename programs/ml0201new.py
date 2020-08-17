@@ -36,8 +36,7 @@ for i in range(intN+1):
 # Hypothesis H, t stands for theta
 # H(t) = t0 x0 + t1 x1
 
-intMaxTrainTimes = 1000
-
+intMaxTrainTimes = 10
 
 # Init. Temp vars.
 intSum = 0
@@ -45,18 +44,17 @@ intTemp = 0
 
 
 # Iterates for intMaxTrainTimes
-for t in range(intMaxTrainTimes):
-  # Iterate for each feature
-  for i in range(0, intN+1):
-    # Init Summation
-    intSum = 0
-
-    for j in range(intM):
+for j in range(intM):
+  # Init Summation
+  intSum = 0
+  for t in range(intMaxTrainTimes):
+    # Iterate for each feature
+    for i in range(0, intN+1):
       intTemp = (aryTheta[0] + aryTheta[1] * aryT[j]['x'][0]) - aryT[j]['y']
       if i == 1:
         intTemp = intTemp * aryT[j]['x'][0]
 
-      # print('i: 0 | t: ' + str(t) + ' | j: ' + str(j) + ' | intTemp: ' + str(intTemp))
+    #   print('i: 0 | t: ' + str(t) + ' | j: ' + str(j) + ' | intTemp: ' + str(intTemp))
       intSum += intTemp
       intTotal += 1
     #End for
@@ -69,8 +67,6 @@ for t in range(intMaxTrainTimes):
     #print('i: 0 | aryTheta[0]: ' + str(aryTheta[0]))
     # print('aryTheta[0]: ' + str(aryTheta[0]))
     # print('aryTheta[1]: ' + str(aryTheta[1]))
-
-
 
 # Print all Theta(s)
 print('aryTheta[0]: ' + str(aryTheta[0]))
