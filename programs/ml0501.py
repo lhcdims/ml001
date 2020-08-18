@@ -6,13 +6,15 @@ import numpy as np
 from matplotlib import pyplot as plt 
 
 # Define No. of Features of x
-intN = 1
+intN = 3
 
-intMaxTrainTimes = 50000
+intMaxTrainTimes = 100001
 
 # Learning Rate
-intAlpha = 0.00001
-#intAlpha = 0.00000000000001
+aryAlpha = []
+
+for i in range(intN+1):
+    aryAlpha.append(0.1 / math.pow(10000, i))
 
 # Define Training Examples
 aryT = []
@@ -43,54 +45,116 @@ for i in range(0, intN+1):
 # Init. Temp vars.
 intSum = 0
 
+# Init min step size
+aryMinStepSize = []
+
+for i in range(intM):
+    aryMinStepSize.append(0)
+
+# Init bolEnd
+aryBolEnd = []
+
+for i in range(0, intN+1):
+    aryBolEnd.append(False)
+
+bolTrainEnd = False
+
+# Init check error
+aryCheckError = [
+    0,
+    10000,
+    20000,
+    30000,
+    40000,
+    50000,
+    60000,
+    70000,
+    80000,
+    90000,
+    100000,
+]
+
+
+
 # Iterates for intMaxTrainTimes
 for t in range(intMaxTrainTimes):
 
+    for i in range(len(aryCheckError)):
+        if t == aryCheckError[i]:
+            # Check Error and Print it out
+            intSum = 0
+            for m in range(intM):
+                intTemp = 0
+                for n in range(0, intN+1):
+                    if n > 0:
+                        intTemp += aryTheta[n] * math.pow(aryT[m]['x'][0], n)
+                    else:
+                        intTemp += aryTheta[n]
+                intSum += math.pow(intTemp - aryT[m]['y'], 2)
+            print("train times: " + str(t) + " , error: " + str(intSum))
+    
+    bolTrainEnd = True
+    for i in range(0, intN+1):
+        if aryBolEnd[i] == False:
+            bolTrainEnd = False
+            break
+    
+    if bolTrainEnd:
+        break
+
     # Iterate for each feature
     for i in range(0, intN+1):
-        # Init Summation
-        intSum = 0
+        if aryBolEnd[i] == False:
+            # Init Summation
+            intSum = 0
 
-        for j in range(intM):
-            for n in range(0, intN+1):
-                if n > 0:
-                    intTemp += aryTheta[n] * math.pow(aryT[j]['x'][0], n)
-                else:
-                    intTemp = aryTheta[n]
-            intTemp = intTemp - aryT[j]['y']
+            for j in range(intM):
+                intTemp = 0
+                for n in range(0, intN+1):
+                    if n > 0:
+                        intTemp += aryTheta[n] * math.pow(aryT[j]['x'][0], n)
+                    else:
+                        intTemp += aryTheta[n]
 
-            if i > 0:
-                intTemp = intTemp * math.pow(aryT[j]['x'][0], n)
+                intTemp = intTemp - aryT[j]['y']
 
-            intSum += intTemp
-        #End for
+                if i > 0:
+                    intTemp = intTemp * math.pow(aryT[j]['x'][0], i)
 
-        # Calculate New Theta(0)
-        aryTheta[i] = aryTheta[i] - intAlpha * intSum
+                intSum += intTemp
+            #End for
+
+            # Calculate New Theta(0)
+            aryTheta[i] = aryTheta[i] - (1 / intM) * aryAlpha[i] * intSum
+
+            if abs((1 / intM) * aryAlpha[i] * intSum) < aryMinStepSize[i]:
+                aryBolEnd[i] = True
+
 
 
 # Print all Theta(s)
 for i in range(0,intN+1):
     print('aryTheta[' + str(i) + ']: ' + str(aryTheta[i]))
 
+
+
+# Plot graph
+aryX = []
+aryY = []
+aryH = []
+
 for i in range(intM):
-    plt.plot(aryT[i]['x'][0], aryT[i]['y'], 'bo')
+    #plt.plot(aryT[i]['x'][0], aryT[i]['y'], 'bo')
     intTemp = 0
     for j in range(0, intN+1):
         if j > 0:
             intTemp += aryTheta[j] * math.pow(aryT[i]['x'][0], j)
         else:
             intTemp += aryTheta[j]
-    plt.plot(aryT[i]['x'][0], intTemp, 'go')
+    aryX.append(aryT[i]['x'][0])
+    aryY.append(aryT[i]['y'])
+    aryH.append(intTemp)
 
-aryTest = []
-for i in range(0, len(aryTest)):
-    intTemp = 0
-    for j in range(0, intN+1):
-        if j > 0:
-            intTemp += aryTheta[j] * math.pow(aryTest[i], j)
-        else:
-            intTemp += aryTheta[j]
-    plt.plot(aryTest[i], intTemp, 'go')
-
+plt.plot(aryX, aryY, 'bx')
+plt.plot(aryX, aryH, 'g')
 plt.show()
