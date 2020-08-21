@@ -1,20 +1,19 @@
 # In this Machine Learning Example, we try to use Gradient Descent
-# to estimate the weight of a person y, with given height x of a person
+# to draw a curve, with given weights and heights of people
 
 import math
-import numpy as np 
-from matplotlib import pyplot as plt 
+from matplotlib import pyplot as plt
 
 # Define No. of Features of x
 intN = 3
 
-intMaxTrainTimes = 100001
-
-# Learning Rate
-aryAlpha = []
-
-for i in range(intN+1):
-    aryAlpha.append(0.1 / math.pow(10000, i))
+# Define Learning Rate
+aryAlpha = [
+    0.1,
+    0.00001,
+    0.000000001,
+    0.0000000000001,
+]
 
 # Define Training Examples
 aryT = []
@@ -34,107 +33,78 @@ aryT.append({'x': [180], 'y': 76})
 intM = len(aryT)
 
 # Init Array Parameters
-aryTheta = []
-
-for i in range(0, intN+1):
-    if i > 0:
-        aryTheta.append(0)
-    else:
-        aryTheta.append(0)
-
-# Init. Temp vars.
-intSum = 0
-
-# Init min step size
-aryMinStepSize = []
-
-for i in range(intM):
-    aryMinStepSize.append(0)
-
-# Init bolEnd
-aryBolEnd = []
-
-for i in range(0, intN+1):
-    aryBolEnd.append(False)
-
-bolTrainEnd = False
-
-# Init check error
-aryCheckError = [
+aryTheta = [
     0,
-    10000,
-    20000,
-    30000,
-    40000,
-    50000,
-    60000,
-    70000,
-    80000,
-    90000,
-    100000,
+    0,
+    0,
+    0,
 ]
+
+# Init maximum training times
+intMaxTrainTimes = 10000
 
 
 
 # Iterates for intMaxTrainTimes
 for t in range(intMaxTrainTimes):
 
-    for i in range(len(aryCheckError)):
-        if t == aryCheckError[i]:
-            # Check Error and Print it out
-            intSum = 0
-            for m in range(intM):
-                intTemp = 0
-                for n in range(0, intN+1):
-                    if n > 0:
-                        intTemp += aryTheta[n] * math.pow(aryT[m]['x'][0], n)
-                    else:
-                        intTemp += aryTheta[n]
-                intSum += math.pow(intTemp - aryT[m]['y'], 2)
-            print("train times: " + str(t) + " , error: " + str(intSum))
-    
-    bolTrainEnd = True
-    for i in range(0, intN+1):
-        if aryBolEnd[i] == False:
-            bolTrainEnd = False
-            break
-    
-    if bolTrainEnd:
-        break
-
     # Iterate for each feature
     for i in range(0, intN+1):
-        if aryBolEnd[i] == False:
-            # Init Summation
-            intSum = 0
+        # Init Summation
+        intSum = 0
 
-            for j in range(intM):
-                intTemp = 0
-                for n in range(0, intN+1):
-                    if n > 0:
-                        intTemp += aryTheta[n] * math.pow(aryT[j]['x'][0], n)
-                    else:
-                        intTemp += aryTheta[n]
+        # Iterate for each training example
+        for j in range(intM):
 
-                intTemp = intTemp - aryT[j]['y']
+            # Init temp for calculation
+            intTemp = 0
 
-                if i > 0:
-                    intTemp = intTemp * math.pow(aryT[j]['x'][0], i)
+            # Sum up to get predicted value of the hypothesis
+            for n in range(0, intN+1):
+                if n > 0:
+                    intTemp += aryTheta[n] * math.pow(aryT[j]['x'][0], n)
+                else:
+                    intTemp += aryTheta[n]
 
-                intSum += intTemp
-            #End for
+            # Calculate Error
+            intTemp = intTemp - aryT[j]['y']
 
-            # Calculate New Theta(0)
-            aryTheta[i] = aryTheta[i] - (1 / intM) * aryAlpha[i] * intSum
+            if i > 0:
+                intTemp = intTemp * math.pow(aryT[j]['x'][0], i)
 
-            if abs((1 / intM) * aryAlpha[i] * intSum) < aryMinStepSize[i]:
-                aryBolEnd[i] = True
+            intSum += intTemp
+        #End for
+
+        # Calculate New Theta(0)
+        aryTheta[i] = aryTheta[i] - (1 / intM) * aryAlpha[i] * intSum
 
 
 
 # Print all Theta(s)
-for i in range(0,intN+1):
-    print('aryTheta[' + str(i) + ']: ' + str(aryTheta[i]))
+print('aryTheta[0]: ' + str(aryTheta[0]))
+print('aryTheta[1]: ' + str(aryTheta[1]))
+print('aryTheta[2]: ' + str(aryTheta[2]))
+print('aryTheta[3]: ' + str(aryTheta[3]))
+
+
+
+# Check Error
+intSum = 0
+aryTheta = [
+    0.292563,
+    0.089824,
+    0.000057,
+    0.000010,
+]
+for m in range(intM):
+    intTemp = 0
+    for n in range(0, intN+1):
+        if n > 0:
+            intTemp += aryTheta[n] * math.pow(aryT[m]['x'][0], n)
+        else:
+            intTemp += aryTheta[n]
+    intSum += math.pow(intTemp - aryT[m]['y'], 2)
+print("Error: " + str(intSum))
 
 
 
@@ -142,9 +112,7 @@ for i in range(0,intN+1):
 aryX = []
 aryY = []
 aryH = []
-
 for i in range(intM):
-    #plt.plot(aryT[i]['x'][0], aryT[i]['y'], 'bo')
     intTemp = 0
     for j in range(0, intN+1):
         if j > 0:
