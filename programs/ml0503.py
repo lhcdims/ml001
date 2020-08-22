@@ -2,6 +2,7 @@
 # to distinguish numeric digits shown in a 8 x 8 LED panel
 
 import math
+from matplotlib import pyplot as plt
 
 # Define Training Examples
 aryT = []
@@ -575,9 +576,41 @@ aryT.append({'x': [
 0, 0, 0, 1, 0, 0, 0, 0,
 ], 'y': 4})
 
+# aryTest
+aryT.append({'x': [
+0, 0, 1, 0, 0, 0, 1, 0,
+0, 1, 0, 0, 0, 0, 1, 0,
+1, 0, 0, 0, 0, 0, 1, 0,
+1, 1, 1, 1, 1, 1, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
+], 'y': 4})
 
 
 # No. of Training Examples
 intM = len(aryT)
 
 print('No. of picture generated: ' + str(intM))
+
+for i in range(intM):
+    for p in range(0,64):
+        if aryT[i]['x'][p] == 1:
+            intX = 8 * (p / 8 - int(p / 8))
+            intY = 7 - int(p / 8)
+            plt.plot(intX, intY, 'bo')
+    
+    # Setup
+    plt.xlim(-1, 8)
+    plt.ylim(-1, 8)
+    
+    frame = plt.gca()
+    frame.axes.get_xaxis().set_visible(False)
+    frame.axes.get_yaxis().set_visible(False)
+
+    plt.axis('off')
+
+    intName = int(i)
+    plt.savefig('./imgTemp/' + str(intName) + '.png')
+    plt.clf()
