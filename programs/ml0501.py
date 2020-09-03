@@ -90,12 +90,12 @@ print('aryTheta[3]: ' + str(aryTheta[3]))
 
 # Check Error
 intSum = 0
-aryTheta = [
-    0.292563,
-    0.089824,
-    0.000057,
-    0.000010,
-]
+# aryTheta = [
+#     0.292563,
+#     0.089824,
+#     0.000057,
+#     0.000010,
+# ]
 for m in range(intM):
     intTemp = 0
     for n in range(0, intN+1):
