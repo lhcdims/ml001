@@ -608,7 +608,7 @@ for i in range(0, intNumOfDigits):
 # G(x) = t0 x0 + t1 x1 + ... + 
 # H(z) = 1 / (1 + e^(-z))
 
-intTrainTimes = 100
+intTrainTimes = 2
 
 # Iterates for Each Digits
 for u in range(intNumOfDigits):
