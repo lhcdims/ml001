@@ -1,4 +1,4 @@
-# In this Machine Learning Example, we try to use Gradient Descent
+# In this Machine Learning Example, we try to use Newton's Method
 # to draw a curve, with given weights and heights of people
 
 import math
@@ -71,11 +71,9 @@ for t in range(intMaxTrainTimes):
                 intSum2 += math.pow(aryT[j]['x'][0], 2 * i)
             else:
                 intSum2 += 1
-
         #End for
 
         # Calculate New Theta(0)
-        #aryTheta[i] = aryTheta[i] - (1 / intM) * aryAlpha[i] * intSum
         aryTheta[i] = aryTheta[i] - intSum / intSum2
 
 
@@ -90,12 +88,6 @@ print('aryTheta[3]: ' + str(aryTheta[3]))
 
 # Check Error
 intSum = 0
-# aryTheta = [
-#     0.292563,
-#     0.089824,
-#     0.000057,
-#     0.000010,
-# ]
 for m in range(intM):
     intTemp = 0
     for n in range(0, intN+1):
