@@ -1,4 +1,4 @@
-# In this Machine Learning Example, we try to use Logistic Regression
+# In this Machine Learning Example, we try to use Softmax Regression
 # to distinguish numeric digits shown in a 8 x 8 LED panel
 
 import math
@@ -592,6 +592,7 @@ intAlpha = 0.1
 
 # Init Array Parameters
 aryTheta = []
+
 for i in range(0, intNumOfDigits):
     aryTheta.append([
     0, 0, 0, 0, 0, 0, 0, 0,
@@ -604,23 +605,24 @@ for i in range(0, intNumOfDigits):
     0, 0, 0, 0, 0, 0, 0, 0,
     ])
 
-# Hypothesis H, t stands for theta
-# G(x) = t0 x0 + t1 x1 + ... + 
-# H(z) = 1 / (1 + e^(-z))
-
+# Number of training times, which is small in softmax regression
 intTrainTimes = 10
 
-
+# Iterate for each training time
 for t in range(intTrainTimes):
 
+    # Iterate for each possible outcome
     for d in range(intNumOfDigits):
 
+        # Iterate for each feature in each possible outcome
         for n in range(intN):
-                
+            
+            # This is the variable which stores first derivative of l(theta)
             intSum = 0
 
+            # Iterate for each training example
             for i in range(intM):
-                intI = 0
+                # Here the loop runs for i times to get first derivative of l(theta)
 
                 intSumE = 0
 
@@ -648,39 +650,34 @@ for t in range(intTrainTimes):
                     intI += intXIN
 
                 intSum += intI
+            # End for and Get the first derivative of l(theta)
 
+            # Calculate new value for each feature in each possible outcome
             aryTheta[d][n] += intAlpha * intSum
 
 
-
-# Print all Theta(s)
-# print('aryTheta: ' + str(aryTheta))
 
 # Testing
 
 # Array which stores testing values
 aryTest = [
-# 0, 0, 1, 0, 0, 0, 1, 0,
-# 0, 1, 0, 0, 0, 0, 1, 0,
-# 1, 0, 0, 0, 0, 0, 1, 0,
-# 1, 1, 1, 1, 1, 1, 1, 0,
-# 0, 0, 0, 0, 0, 0, 1, 0,
-# 0, 0, 0, 0, 0, 0, 1, 0,
-# 0, 0, 0, 0, 0, 0, 1, 0,
-# 0, 0, 0, 0, 0, 0, 1, 0,
-0, 1, 1, 1, 1, 1, 1, 0,
-1, 0, 0, 0, 0, 0, 0, 1,
-1, 0, 0, 0, 0, 0, 0, 1,
-1, 0, 0, 0, 0, 0, 0, 1,
-1, 0, 0, 0, 0, 0, 0, 1,
-1, 0, 0, 0, 0, 0, 0, 1,
-1, 0, 0, 0, 0, 0, 0, 1,
-0, 1, 1, 1, 1, 1, 1, 0,
+0, 0, 1, 0, 0, 0, 1, 0,
+0, 1, 0, 0, 0, 0, 1, 0,
+1, 0, 0, 0, 0, 0, 1, 0,
+1, 1, 1, 1, 1, 1, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
+0, 0, 0, 0, 0, 0, 1, 0,
 ]
 
+# Array which stores all probabilities of y getting 0,1,2,3,4
 aryP = []
 
+# Iterate for each possible outcome
 for d in range(intNumOfDigits):
+    # Here the loop runs to get the probability of y getting each possible outcome
+
     intSumD = 0
 
     for s1 in range(intN):
@@ -700,13 +697,18 @@ for d in range(intNumOfDigits):
         intSumE += intTempSum
 
     intP = intSumD / intSumE
+
+    # Append the probability of y getting d to aryP
     aryP.append(intP)
 
 
-
+# Sum of probabilities of y getting 0-4
 intTotalP = 0
 for d in range(intNumOfDigits):
     intTotalP += aryP[d]
+
+    # Output each probability of y getting 0-4
     print('P of getting ' + str(d) + ': ' + str(aryP[d]))
 
+# Print out the total probability, which should be 1
 print('Total P: ' + str(intTotalP))
