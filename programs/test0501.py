@@ -14,21 +14,22 @@ intMaxTrainTimes = 10001
 aryAlpha = []
 
 for i in range(intN+1):
-    aryAlpha.append(0.1 / math.pow(10000, i))
+    aryAlpha.append(0.1 / math.pow(100000, i))
 
 # Define Training Examples
 aryT = []
-aryT.append({'x': [10], 'y': 0.5})
-aryT.append({'x': [20], 'y': 1.5})
-aryT.append({'x': [40], 'y': 3.5})
-aryT.append({'x': [60], 'y': 8})
-aryT.append({'x': [80], 'y': 12})
-aryT.append({'x': [100], 'y': 20})
-aryT.append({'x': [120], 'y': 30})
-aryT.append({'x': [140], 'y': 40})
-aryT.append({'x': [160], 'y': 55})
-aryT.append({'x': [170], 'y': 70})
-aryT.append({'x': [180], 'y': 76})
+
+aryT.append({'x': [0], 'y': 10.163})
+aryT.append({'x': [60], 'y': 10.155})
+aryT.append({'x': [120], 'y': 10.148})
+aryT.append({'x': [180], 'y': 10.143})
+aryT.append({'x': [240], 'y': 10.136})
+aryT.append({'x': [300], 'y': 10.129})
+aryT.append({'x': [360], 'y': 10.124})
+aryT.append({'x': [420], 'y': 10.116})
+aryT.append({'x': [480], 'y': 10.112})
+aryT.append({'x': [540], 'y': 10.105})
+aryT.append({'x': [600], 'y': 10.102})
 
 # No. of Training Examples
 intM = len(aryT)
