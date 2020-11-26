@@ -588,7 +588,7 @@ aryT.append({'x': [
 intM = len(aryT)
 
 # Learning Rate
-intAlpha = 0.1
+intAlpha = 0.01
 
 # Init Array Parameters
 aryTheta = []
@@ -608,12 +608,13 @@ for i in range(0, intNumOfDigits):
 # G(x) = t0 x0 + t1 x1 + ... + 
 # H(z) = 1 / (1 + e^(-z))
 
-intTrainTimes = 2
+intTrainTimes = 30
 
-# Iterates for Each Digits
-for u in range(intNumOfDigits):
-    # Iterates for intTrainTimes
-    for t in range(intTrainTimes):
+# Iterates for intTrainTimes
+for t in range(intTrainTimes):
+
+    # Iterates for Each Digits
+    for u in range(intNumOfDigits):
 
         # Iterates for each feature
         for i in range(intN):

@@ -588,7 +588,7 @@ aryT.append({'x': [
 intM = len(aryT)
 
 # Learning Rate
-intAlpha = 0.1
+intAlpha = 0.01
 
 # Init Array Parameters
 aryTheta = []
@@ -606,7 +606,7 @@ for i in range(0, intNumOfDigits):
     ])
 
 # Number of training times, which is small in softmax regression
-intTrainTimes = 10
+intTrainTimes = 30
 
 # Iterate for each training time
 for t in range(intTrainTimes):
