@@ -525,6 +525,8 @@ childDis = 99999
 # Methods
 
 def calDisChild():
+    global pop, dis
+
     intTemp = 0
     for j in range(N_SIZE-1):
         intTemp += aryData[child[j]][child[j+1]]
@@ -532,6 +534,8 @@ def calDisChild():
     return intTemp
 
 def initDis():
+    global pop, dis
+
     for i in range(POP_SIZE):
         intTemp = 0
         for j in range(N_SIZE-1):
@@ -540,6 +544,8 @@ def initDis():
         dis.append(intTemp)
 
 def init():
+    global pop, dis
+
     aryTemp = []
     for j in range(N_SIZE):
         aryTemp.append(j)
@@ -550,20 +556,39 @@ def init():
         pop.append(random.sample(aryTemp, N_SIZE))
 
 def evaluate():
+    global pop, dis
+
     if (childDis < max(dis)):
         pop[dis.index(max(dis))] = child
         dis[dis.index(max(dis))] = childDis
 
 def select():
+    global pop, dis
+
+    aryZipped = list(zip(dis, pop))
+
+    # Asc order sort
+    aryResult = sorted(aryZipped)
+
+    aryResult2 = list(zip(*aryResult))
+
+    pop = list(aryResult2[1])
+    dis = list(aryResult2[0])
+
+    # Desc order sort
+    disReverse = sorted(dis, reverse=True)
+
     intP = np.sum(dis)
     aryP = []
 
     for i in range(POP_SIZE):
-        aryP.append(dis[i] / intP)
+        aryP.append(disReverse[i] / intP)
 
     return np.random.choice(POP_SIZE, 2, p=aryP)
 
 def crossover():
+    global pop, dis
+
     # Init
     intNSize = int(N_SIZE)
     intNSizeD2 = int(11)
@@ -609,6 +634,8 @@ def crossover():
     return child
 
 def mutate():
+    global pop, dis
+
     if np.random.rand() < MUTATION_RATE:
         bolEnd = False
         while not bolEnd:
@@ -621,16 +648,33 @@ def mutate():
         child[intA] = child[intB]
         child[intB] = intTemp
 
+def formatPop(aryPop):
+    index = aryPop.index(0)
+
+    aryFirst = aryPop[index:]
+    arySecond = aryPop[:index]
+
+    aryResult = aryFirst + arySecond
+
+    for i in range(1, 21):
+        aryResult[i] = chr(aryResult[i]+64)
+
+    aryResult[0] = "X"
+    aryResult.append("X")
+    return aryResult
+
 # Main Program
 
 # Init
 init()
 initDis()
 
-# Output Result
-print(pop[dis.index(min(dis))])
+# Output Init Result
+print("")
+print("Start")
 print("Min: " + str(min(dis)))
 print("Max: " + str(max(dis)))
+print("")
 
 # Iterate for N generations
 for i in range(N_GENERATIONS):
@@ -649,7 +693,11 @@ for i in range(N_GENERATIONS):
     # Calculate child's performance
     childDis = calDisChild()
 
-# Output Result
-print(pop[dis.index(min(dis))])
+# Output Iteration Result
+print("End")
 print("Min: " + str(min(dis)))
 print("Max: " + str(max(dis)))
+print("")
+print("Minimum distance path: " + str(min(dis)))
+print(formatPop(pop[dis.index(min(dis))]))
+print("")
