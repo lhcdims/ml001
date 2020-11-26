@@ -513,8 +513,7 @@ import numpy as np
 
 N_SIZE = 21             # no. of cities
 POP_SIZE = 100          # population size
-MUTATION_RATE = 0.03    # mutation probability
-N_GENERATIONS = 20000   # no. of iterations
+N_GENERATIONS = 40000   # no. of iterations
 
 pop = []
 dis = []
@@ -524,13 +523,13 @@ childDis = 99999
 
 # Methods
 
-def calDisChild():
+def calDisChild(aryChild):
     global pop, dis
 
     intTemp = 0
     for j in range(N_SIZE-1):
-        intTemp += aryData[child[j]][child[j+1]]
-    intTemp += aryData[child[N_SIZE-1]][child[0]]
+        intTemp += aryData[aryChild[j]][aryChild[j+1]]
+    intTemp += aryData[aryChild[N_SIZE-1]][aryChild[0]]
     return intTemp
 
 def initDis():
@@ -558,7 +557,14 @@ def init():
 def evaluate():
     global pop, dis
 
-    if (childDis < max(dis)):
+    bolFound = False
+
+    for i in range(POP_SIZE):
+        if (pop[i] == child):
+            bolFound = True
+            break
+
+    if (childDis < max(dis) and not bolFound):
         pop[dis.index(max(dis))] = child
         dis[dis.index(max(dis))] = childDis
 
@@ -634,19 +640,23 @@ def crossover():
     return child
 
 def mutate():
-    global pop, dis
+    global pop, dis, child
 
-    if np.random.rand() < MUTATION_RATE:
-        bolEnd = False
-        while not bolEnd:
-            intA = random.randint(0,N_SIZE-1)
-            intB = random.randint(0,N_SIZE-1)
-            if (intA != intB):
-                bolEnd = True
+    childTemp = child
 
-        intTemp = child[intA]
-        child[intA] = child[intB]
-        child[intB] = intTemp
+    bolEnd = False
+    while not bolEnd:
+        intA = random.randint(0,N_SIZE-1)
+        intB = random.randint(0,N_SIZE-1)
+        if (intA != intB):
+            bolEnd = True
+
+    intTemp = childTemp[intA]
+    childTemp[intA] = childTemp[intB]
+    childTemp[intB] = intTemp
+
+    if calDisChild(childTemp) < calDisChild(child):
+        child = childTemp
 
 def formatPop(aryPop):
     index = aryPop.index(0)
@@ -691,7 +701,7 @@ for i in range(N_GENERATIONS):
     mutate()
 
     # Calculate child's performance
-    childDis = calDisChild()
+    childDis = calDisChild(child)
 
 # Output Iteration Result
 print("End")
